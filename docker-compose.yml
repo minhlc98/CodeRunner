@@ -1,0 +1,39 @@
+version: '3.8'
+name: code-runner
+services:
+  rabbitmq:
+    image: rabbitmq:3.11-management
+    restart: always
+    mem_reservation: 128m
+    mem_limit: 256m
+    cpus: 0.5
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - ~/Desktop/Docker/RabbitMQ/data/:/var/lib/rabbitmq
+      - ~/Desktop/Docker/RabbitMQ/log/:/var/log/rabbitmq
+  redis:
+    image: redis:7.0.10-alpine
+    mem_reservation: 128m
+    mem_limit: 256m
+    cpus: 0.5
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - ~/Desktop/Docker/Redis:/data
+  postgres:
+    image: postgres:16.10
+    restart: always
+    cpus: 0.5
+    mem_reservation: 256m
+    mem_limit: 512m
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: coderunner
+    ports:
+      - "5432:5432"
+    volumes:
+      - ~/Desktop/Docker/Postgres-16:/var/lib/postgresql/data
