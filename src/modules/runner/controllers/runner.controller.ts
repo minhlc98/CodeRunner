@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
-import { RunnerService } from './runner.service';
-import RunCodeDto from './dtos/run-code.dto';
+import { RunnerService } from '../services/runner.service';
+import { RunCodeDto } from '../dtos/run-code.dto';
 import { Ctx, MessagePattern, Payload, RmqContext } from '@nestjs/microservices';
 
 @Controller('runner')
@@ -30,7 +30,7 @@ export class RunnerController {
     const { id } = data;
     console.log('Received exec_code message. Runner ID:', id);
     const runner = await this.runnerService.assertExists({ id });
-    await this.runnerService.runCode({ runner });
+    await this.runnerService.run({ runner });
     
     channel.ack(originalMsg);
   }

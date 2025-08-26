@@ -2,7 +2,7 @@ import { IsString, IsNotEmpty, IsEnum } from 'class-validator';
 import { Transform } from 'class-transformer';
 import _CONST from 'src/shared/_CONST';
 
-export default class RunCodeDto {
+export class RunCodeDto {
   @IsString()
   @Transform(({ value }) => value?.trim())
   @IsNotEmpty({ message: 'Language is required' })
