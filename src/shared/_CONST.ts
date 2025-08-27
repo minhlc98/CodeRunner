@@ -13,16 +13,24 @@ const _CONST = {
     LANGUAGE: {
       JAVASCRIPT: 'JAVASCRIPT',
       TYPESCRIPT: 'TYPESCRIPT',
+      GO: 'GO',
     },
     get LANGUAGE_INFO() {
       return {
         [_CONST.RUNNER.LANGUAGE.JAVASCRIPT]: {
           name: 'JavaScript',
           extension: 'js',
+          timeout: 3000, // 3 seconds
         },
         [_CONST.RUNNER.LANGUAGE.TYPESCRIPT]: {
           name: 'TypeScript',
           extension: 'ts',
+          timeout: 4000, // 4 seconds
+        },
+        [_CONST.RUNNER.LANGUAGE.GO]: {
+          name: 'Go',
+          extension: 'go',
+          timeout: 10000, // 10 seconds
         },
       }
     },

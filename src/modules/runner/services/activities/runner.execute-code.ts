@@ -2,6 +2,7 @@ import { exec } from "child_process";
 import { writeCodeToFile } from "src/modules/runner/utils";
 import { ExecuteResult } from "../../interfaces/execute-code-result.interface";
 import { log_error, removeDir } from "src/common";
+import _CONST from "src/shared/_CONST";
 
 export const executeCode = () => {
   return async ({ language, code }: { language: string, code: string }): Promise<ExecuteResult> => {
@@ -23,7 +24,7 @@ export const executeCode = () => {
               stderr: null
             });
           }
-        }, 3000);
+        }, _CONST.RUNNER.LANGUAGE_INFO[language]?.timeout || 3000); // default timeout 3s
       });
     }
 
