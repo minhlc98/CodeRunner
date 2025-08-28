@@ -2,8 +2,9 @@ import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { RunnerService } from '../services/runner.service';
 import { RunCodeDto } from '../dtos/run-code.dto';
 import { Ctx, MessagePattern, Payload, RmqContext } from '@nestjs/microservices';
+import { log_error } from 'src/common';
 
-@Controller('runner')
+@Controller('api/runner')
 export class RunnerController {
   constructor(private readonly runnerService: RunnerService) {}
 
@@ -13,13 +14,28 @@ export class RunnerController {
   }
 
   @Get('status/:id')
-  async getStatus(@Param('id') id: string): Promise<{ status: string; output?: string; error?: string }> {
-    const runner = await this.runnerService.assertExists({ id });
-    return {
-      status: runner.status,
-      output: runner.output,
-      error: runner.error,
+  async getStatus(@Param('id') id: string): Promise<{ status: string | null; output: string | null; error: string | null }> {
+    const result = {
+      status: null,
+      output: null,
+      error: null,
     };
+
+    if (id.length < 32) return result;
+
+    try {
+      const runner = await this.runnerService.assertExists({ id });
+      return {
+        status: runner.status,
+        output: runner.output,
+        error: runner.error,
+      };
+    }
+    catch (error) {
+      log_error(error);
+    }
+
+    return result;
   }
 
   @MessagePattern('exec_code')
@@ -28,7 +44,6 @@ export class RunnerController {
     const originalMsg = context.getMessage();
 
     const { id } = data;
-    console.log('Received exec_code message. Runner ID:', id);
     const runner = await this.runnerService.assertExists({ id });
     await this.runnerService.run({ runner });
     
