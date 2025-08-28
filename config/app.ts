@@ -10,4 +10,9 @@ export default {
       }
     }
   },
+  cron: {
+    cleanRunners: {
+      expression: '0 0 */12 * * *', // every 12 hours
+    }
+  }
 }
