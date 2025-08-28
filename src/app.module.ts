@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { RunnerModule } from './modules/runner/runner.module';
 import { Runner } from './modules/runner/entities/runner.entity';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -20,9 +21,16 @@ import { Runner } from './modules/runner/entities/runner.entity';
       username: process.env.POSTGRES_USER,
       entities: [Runner],
       database: process.env.POSTGRES_DB || 'coderunner',
+      ssl: process.env.POSTGRES_SSL === 'true' ? true : false,
+      extra: {
+        ssl: {
+          rejectUnauthorized: false,
+        },
+      },
       synchronize: true, // NOTE: set to false in production
       logging: false,
     }),
+    ScheduleModule.forRoot(),
     RunnerModule,
   ],
   controllers: [],
