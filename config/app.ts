@@ -1,18 +1,12 @@
-export default {
-  rabbitmq: {
-    queue: {
-      task: {
-        name: 'task',
-        active: true,
-        prefetch: 1,
-        durable: true,
-        persistent: true,
-      }
-    }
-  },
-  cron: {
-    cleanRunners: {
-      expression: '0 0 */12 * * *', // every 12 hours
-    }
-  }
+import webConfig from './web';
+import workerConfig from './worker';
+
+let config: typeof webConfig | typeof workerConfig = { ...webConfig };
+if (process.env.APP_TYPE === 'web') {
+  config = { ...webConfig };
 }
+else if (process.env.APP_TYPE === 'worker') {
+  config = { ...workerConfig };
+}
+
+export default config;
