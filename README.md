@@ -1,3 +1,7 @@
+Client Code: https://github.com/minhlc98/Code-Runner-UI
+
+<img width="1149" height="815" alt="Screenshot 2025-08-29 at 11 56 52" src="https://github.com/user-attachments/assets/dfb4e374-887c-4e9e-bb7e-8ee23661431a" />
+
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
 </p>
@@ -34,27 +38,11 @@ $ yarn install
 ## Compile and run the project
 
 ```bash
-# development
-$ yarn run start
+# watch mode (web)
+$ yarn run start:web
 
-# watch mode
-$ yarn run start:dev
-
-# production mode
-$ yarn run start:prod
-```
-
-## Run tests
-
-```bash
-# unit tests
-$ yarn run test
-
-# e2e tests
-$ yarn run test:e2e
-
-# test coverage
-$ yarn run test:cov
+# watch mode (worker)
+$ yarn run start:worker
 ```
 
 ## Deployment
