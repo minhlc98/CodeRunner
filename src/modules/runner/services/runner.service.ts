@@ -46,9 +46,9 @@ export class RunnerService {
 
   @Cron(config.cron.cleanRunners.expression, {
     name: 'cleanOldRunners',
+    disabled: config.cron.cleanRunners.disabled
   })
   async cleanOldRunners() {
-    if (process.env.SERVER_NAME !== 'web_1') return; // TODO: improving by config, don't check like this
     return this.clean();
   }
 }
