@@ -1,7 +1,7 @@
 import { exec } from "child_process";
 import { writeCodeToFile } from "src/modules/runner/utils";
 import { ExecuteResult } from "../../interfaces/execute-code-result.interface";
-import { log_error, removeDir } from "src/common";
+import { log_error, removeDir } from "src/common/utils/helper";
 import _CONST from "src/shared/_CONST";
 
 export const executeCode = () => {

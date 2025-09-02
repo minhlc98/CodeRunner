@@ -1,6 +1,6 @@
 import { Repository } from "typeorm";
 import { Runner } from "src/modules/runner/entities/runner.entity";
-import { log_info } from "src/common";
+import { log_info } from "src/common/utils/helper";
 
 export const clean = ({ runnerRepository }: { runnerRepository: Repository<Runner> }) => {
   return async (date?: Date): Promise<void> => {
