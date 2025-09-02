@@ -2,7 +2,7 @@ import { Repository } from "typeorm";
 import { Runner } from "src/modules/runner/entities/runner.entity";
 import { RunCodeDto } from "src/modules/runner/dtos/run-code.dto";
 import { ClientProxy } from "@nestjs/microservices";
-import { log_error } from "src/common";
+import { log_error } from "src/common/utils/helper";
 
 export const createRunner = ({ runnerRepository, taskClient }: { runnerRepository: Repository<Runner>, taskClient: ClientProxy }) => {
   return async (data: RunCodeDto): Promise<{ success: boolean; id?: string }> => {
