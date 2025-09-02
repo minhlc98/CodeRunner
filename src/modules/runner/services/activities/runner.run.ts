@@ -5,7 +5,7 @@ import { RunCodeResponse } from "src/modules/runner/interfaces/run-code-response
 import _CONST from "src/shared/_CONST";
 import { Runner } from "src/modules/runner/entities/runner.entity";
 import { ExecuteResult } from "src/modules/runner/interfaces/execute-code-result.interface";
-import { log_error } from "src/common";
+import { log_error } from "src/common/utils/helper";
 import { RunnerService } from "../runner.service";
 
 export const run = ({ runnerRepository, runnerService }: { runnerRepository: Repository<Runner>, runnerService: RunnerService }) => {

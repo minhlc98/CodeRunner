@@ -4,6 +4,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { RunnerModule } from './modules/runner/runner.module';
 import { Runner } from './modules/runner/entities/runner.entity';
 import { ScheduleModule } from '@nestjs/schedule';
+import { ThrottlerModule } from '@nestjs/throttler';
+import { ThrottlerStorageRedisService } from '@nest-lab/throttler-storage-redis';
+import { RedisModule } from './shared/redis.module';
+import Redis from 'ioredis';
 
 @Module({
   imports: [
@@ -29,6 +33,14 @@ import { ScheduleModule } from '@nestjs/schedule';
       },
       synchronize: true, // NOTE: set to false in production
       logging: false,
+    }),
+    ThrottlerModule.forRootAsync({
+      imports: [RedisModule],
+      inject: ['REDIS_CLIENT'],
+      useFactory: (redisClient: Redis) => ({
+        throttlers: [{ limit: 10, ttl: 60 }],
+        storage: new ThrottlerStorageRedisService(redisClient),
+      }),
     }),
     ScheduleModule.forRoot(),
     RunnerModule,
