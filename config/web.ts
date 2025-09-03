@@ -4,7 +4,7 @@ export default {
       task: {
         name: 'task',
         active: true,
-        prefetch: 1,
+        prefetch: 2,
         durable: true,
         persistent: true,
       }
@@ -13,7 +13,7 @@ export default {
   cron: {
     cleanRunners: {
       disabled: false,
-      expression: '0 */1 * * * *', // every 12 hours
+      expression: '0 0 */12 * * *', // every 12 hours
     }
   }
 }

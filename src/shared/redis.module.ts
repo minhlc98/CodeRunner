@@ -9,6 +9,8 @@ const redisProvider = {
     const client = new Redis({
       host: configService.get<string>('REDIS_HOST'),
       port: configService.get<number>('REDIS_PORT'),
+      username: "minhlc", // needs Redis >= 6
+      password: "Minh@1304",
     });
 
     client.on('connect', () => console.log('Redis connected ✅'));

@@ -4,7 +4,7 @@ export default {
       task: {
         name: 'task',
         active: true,
-        prefetch: 1,
+        prefetch: 2,
         durable: true,
         persistent: true,
       }
