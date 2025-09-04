@@ -1,13 +1,15 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { RunnerModule } from './modules/runner/runner.module';
-import { Runner } from './modules/runner/entities/runner.entity';
 import { ScheduleModule } from '@nestjs/schedule';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { ThrottlerStorageRedisService } from '@nest-lab/throttler-storage-redis';
-import { RedisModule } from './shared/redis.module';
 import Redis from 'ioredis';
+
+import { RunnerModule } from './modules/runner/runner.module';
+import { Runner } from './modules/runner/entities/runner.entity';
+import { RedisModule } from './shared/redis.module';
+
 
 @Module({
   imports: [
@@ -26,11 +28,13 @@ import Redis from 'ioredis';
       entities: [Runner],
       database: process.env.POSTGRES_DB || 'coderunner',
       ssl: process.env.POSTGRES_SSL === 'true' ? true : false,
-      extra: {
-        ssl: {
-          rejectUnauthorized: false,
-        },
-      },
+      extra: process.env.POSTGRES_SSL === 'true'
+        ? {
+            ssl: {
+              rejectUnauthorized: false,
+            },
+          }
+        : undefined,
       synchronize: true, // NOTE: set to false in production
       logging: false,
     }),
