@@ -21,22 +21,22 @@ const _CONST = {
         [_CONST.RUNNER.LANGUAGE.JAVASCRIPT]: {
           name: 'JavaScript',
           extension: 'js',
-          timeout: 3000, // 3 seconds
+          timeout: 4000, // 4 seconds
         },
         [_CONST.RUNNER.LANGUAGE.TYPESCRIPT]: {
           name: 'TypeScript',
           extension: 'ts',
-          timeout: 4000, // 4 seconds
+          timeout: 5000, // 5 seconds
         },
         [_CONST.RUNNER.LANGUAGE.GO]: {
           name: 'Go',
           extension: 'go',
-          timeout: 10000, // 10 seconds
+          timeout: 15000, // 15 seconds
         },
         [_CONST.RUNNER.LANGUAGE.JAVA]: {
           name: 'Java',
           extension: 'java',
-          timeout: 6000, // 10 seconds
+          timeout: 8000, // 8 seconds
         }
       }
     },
