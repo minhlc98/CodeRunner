@@ -31,7 +31,7 @@ const _CONST = {
         [_CONST.RUNNER.LANGUAGE.GO]: {
           name: 'Go',
           extension: 'go',
-          timeout: 15000, // 15 seconds
+          timeout: 20000, // 20 seconds
         },
         [_CONST.RUNNER.LANGUAGE.JAVA]: {
           name: 'Java',
