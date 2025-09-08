@@ -14,7 +14,8 @@ const _CONST = {
       JAVASCRIPT: 'JAVASCRIPT',
       TYPESCRIPT: 'TYPESCRIPT',
       GO: 'GO',
-      JAVA: 'JAVA'
+      JAVA: 'JAVA',
+      PYTHON: 'PYTHON',
     },
     get LANGUAGE_INFO() {
       return {
@@ -37,6 +38,11 @@ const _CONST = {
           name: 'Java',
           extension: 'java',
           timeout: 8000, // 8 seconds
+        },
+        [_CONST.RUNNER.LANGUAGE.PYTHON]: {
+          name: 'Python',
+          extension: 'py',
+          timeout: 4000, // 4 seconds 
         }
       }
     },
