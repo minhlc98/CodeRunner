@@ -1,5 +1,6 @@
-<p>Link: https://coderunner.online</p>
-<p>Client Code: https://github.com/minhlc98/CodeRunner-UI</p>
+<p><strong>Technologies: </strong>NestJS, PostgreSQL, Docker, Rabbit, Redis</p>
+<p><strong>Link Demo: </strong> https://coderunner.online</p>
+<p><strong>Client Code: </strong>https://github.com/minhlc98/CodeRunner-UI</p>
 
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
