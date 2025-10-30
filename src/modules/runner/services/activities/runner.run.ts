@@ -22,6 +22,20 @@ export const run = ({ runnerRepository, runnerService }: { runnerRepository: Rep
 
     try {
       const startedAt = new Date();
+      const runnerCreatedAt = runner.createdAt;
+      const durationFromCreatedToStart = startedAt.getTime() - runnerCreatedAt.getTime();
+      if (durationFromCreatedToStart > _CONST.MS.MINUTE) {
+        // skip running if the runner has been waiting for too long
+        await runnerRepository.update(runner.id, {
+          status: _CONST.RUNNER.STATUS.SKIPPED,
+          updatedAt: startedAt,
+          finishedAt: startedAt,
+          duration: 0,
+        });
+
+        return response;
+      }
+
       await runnerRepository.update(runner.id, {
         status: _CONST.RUNNER.STATUS.PROCESSING,
         updatedAt: startedAt

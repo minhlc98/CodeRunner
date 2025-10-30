@@ -1,10 +1,17 @@
 const _CONST = {
+  MS: {
+    SECOND: 1000,
+    MINUTE: 60 * 1000,
+    HOUR: 60 * 60 * 1000,
+    DAY: 24 * 60 * 60 * 1000,
+  },
   RUNNER: {
     STATUS: {
       IDLE: 'IDLE',
       PROCESSING: 'PROCESSING',
       ERROR: 'ERROR',
       COMPLETED: 'COMPLETED',
+      SKIPPED: 'SKIPPED',
     },
     get LIST_STATUS() {
       return Object.values(_CONST.RUNNER.STATUS);
