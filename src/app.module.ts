@@ -9,7 +9,7 @@ import Redis from 'ioredis';
 import { RunnerModule } from './modules/runner/runner.module';
 import { Runner } from './modules/runner/entities/runner.entity';
 import { RedisModule } from './shared/redis.module';
-
+import { REDIS_CLIENT } from './shared/redis.module';
 
 @Module({
   imports: [
@@ -40,7 +40,7 @@ import { RedisModule } from './shared/redis.module';
     }),
     ThrottlerModule.forRootAsync({
       imports: [RedisModule],
-      inject: ['REDIS_CLIENT'],
+      inject: [REDIS_CLIENT],
       useFactory: (redisClient: Redis) => ({
         throttlers: [{ limit: 10, ttl: 60 }],
         storage: new ThrottlerStorageRedisService(redisClient),

@@ -2,8 +2,10 @@ import { Global, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import Redis from 'ioredis';
 
+export const REDIS_CLIENT = Symbol('REDIS_CLIENT');
+
 const redisProvider = {
-  provide: 'REDIS_CLIENT',
+  provide: REDIS_CLIENT,
   inject: [ConfigService],
   useFactory: async (configService: ConfigService) => {
     const client = new Redis({
@@ -11,17 +13,19 @@ const redisProvider = {
       port: configService.get<number>('REDIS_PORT'),
       username: configService.get<string>('REDIS_USERNAME'),
       password: configService.get<string>('REDIS_PASSWORD'),
+      lazyConnect: true,
     });
 
-    client.on('connect', () => console.log('Redis connected ✅'));
+    client.on('ready', () => console.log('Redis connected ✅'));
     client.on('error', (err) => console.error('Redis error ❌', err));
 
+    await client.connect();
     return client;
   },
 };
 
 @Global()
-  @Module({
+@Module({
   imports: [ConfigModule],
   providers: [redisProvider],
   exports: [redisProvider],
