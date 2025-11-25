@@ -1,7 +1,8 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import config from 'config/app';
+import { EnviromentModule } from 'src/modules/enviroment/enviroment.module';
+import { EnviromentService } from 'src/modules/enviroment/enviroment.service';
 
 const queue_config = config.rabbitmq.queue.task;
 
@@ -9,14 +10,14 @@ const queue_config = config.rabbitmq.queue.task;
   imports: [
     ClientsModule.registerAsync([
       {
-        imports: [ConfigModule],
+        imports: [EnviromentModule],
         name: queue_config.name.toUpperCase(),
-        inject: [ConfigService],
-        useFactory: async (cfg: ConfigService) => {
+        inject: [EnviromentService],
+        useFactory: async (env: EnviromentService) => {
           return {
             transport: Transport.RMQ,
             options: {
-              urls: [cfg.get<string>('RABBITMQ_URL')!],
+              urls: [env.ENVIROMENT.RABBITMQ_URL],
               queue: queue_config.name,
               queueOptions: { durable: queue_config.durable },
               prefetchCount: queue_config.prefetch,

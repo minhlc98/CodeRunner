@@ -2,9 +2,10 @@ import { NestFactory } from '@nestjs/core';
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
 import { NestExpressApplication } from '@nestjs/platform-express';
-import { EnviromentService } from './enviroment/enviroment.service';
+import { EnviromentService } from './modules/enviroment/enviroment.service';
 
 async function bootstrap() {
+  const logger = new Logger("Application");
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const env: EnviromentService = app.get(EnviromentService);
   app.enableCors({
@@ -20,7 +21,7 @@ async function bootstrap() {
   app.set('trust proxy', 1);
 
   await app.listen(env.ENVIROMENT.PORT, () => {
-    Logger.log(`🚀 Server running on port ${env.ENVIROMENT.PORT}`);
+    logger.log(`🚀 Server running on port ${env.ENVIROMENT.PORT}`);
   });
 }
 bootstrap();

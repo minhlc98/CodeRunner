@@ -1,5 +1,5 @@
 import { Global, Logger, Module } from '@nestjs/common';
-import { EnviromentService } from 'src/enviroment/enviroment.service';
+import { EnviromentService } from 'src/modules/enviroment/enviroment.service';
 import Redis from 'ioredis';
 
 export const REDIS_CLIENT = Symbol('REDIS_CLIENT');
@@ -16,8 +16,10 @@ const redisProvider = {
       lazyConnect: true,
     });
 
-    client.on('ready', () => Logger.log('[Redis] connected ✅'));
-    client.on('error', (err) => Logger.error('[Redis] error ❌', err));
+    const logger = new Logger("Redis");
+
+    client.on('ready', () => logger.log('connected ✅'));
+    client.on('error', (err) => logger.error('error ❌', err));
 
     await client.connect();
     return client;

@@ -8,10 +8,10 @@ import Redis from 'ioredis';
 
 import { RunnerModule } from './modules/runner/runner.module';
 import { Runner } from './modules/runner/entities/runner.entity';
-import { RedisModule } from './shared/redis.module';
-import { REDIS_CLIENT } from './shared/redis.module';
-import { EnviromentModule } from './enviroment/enviroment.module';
-import { EnviromentService } from './enviroment/enviroment.service';
+import { RedisModule } from './modules/redis/redis.module';
+import { REDIS_CLIENT } from './modules/redis/redis.module';
+import { EnviromentModule } from './modules/enviroment/enviroment.module';
+import { EnviromentService } from './modules/enviroment/enviroment.service';
 
 @Module({
   imports: [
