@@ -10,6 +10,8 @@ import { RunnerModule } from './modules/runner/runner.module';
 import { Runner } from './modules/runner/entities/runner.entity';
 import { RedisModule } from './shared/redis.module';
 import { REDIS_CLIENT } from './shared/redis.module';
+import { EnviromentModule } from './enviroment/enviroment.module';
+import { EnviromentService } from './enviroment/enviroment.service';
 
 @Module({
   imports: [
@@ -17,26 +19,28 @@ import { REDIS_CLIENT } from './shared/redis.module';
       isGlobal: true,
       envFilePath: '.env',
     }),
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: process.env.POSTGRES_HOST || 'localhost',
-      port: process.env.POSTGRES_PORT
-        ? parseInt(process.env.POSTGRES_PORT)
-        : 5432,
-      password: process.env.POSTGRES_PASSWORD,
-      username: process.env.POSTGRES_USER,
-      entities: [Runner],
-      database: process.env.POSTGRES_DB || 'coderunner',
-      ssl: process.env.POSTGRES_SSL === 'true' ? true : false,
-      extra: process.env.POSTGRES_SSL === 'true'
-        ? {
-            ssl: {
-              rejectUnauthorized: false,
-            },
-          }
-        : undefined,
-      synchronize: true, // NOTE: set to false in production
-      logging: false,
+    EnviromentModule,
+    TypeOrmModule.forRootAsync({
+      inject: [EnviromentService],
+      useFactory: async (env: EnviromentService) => ({
+          type: 'postgres',
+          host: env.ENVIROMENT.POSTGRES_HOST,
+          port: env.ENVIROMENT.POSTGRES_PORT,
+          password: env.ENVIROMENT.POSTGRES_PASSWORD,
+          username: env.ENVIROMENT.POSTGRES_USER,
+          entities: [Runner],
+          database: env.ENVIROMENT.POSTGRES_DB || 'coderunner',
+          ssl: env.ENVIROMENT.POSTGRES_SSL,
+          extra: env.ENVIROMENT.POSTGRES_SSL
+            ? {
+              ssl: {
+                rejectUnauthorized: false,
+              },
+            }
+            : undefined,
+          synchronize: false, // NOTE: set to false in production
+          logging: false,
+      })
     }),
     ThrottlerModule.forRootAsync({
       imports: [RedisModule],
