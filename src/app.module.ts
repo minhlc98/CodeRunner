@@ -12,6 +12,7 @@ import { RedisModule } from './modules/redis/redis.module';
 import { REDIS_CLIENT } from './modules/redis/redis.module';
 import { EnviromentModule } from './modules/enviroment/enviroment.module';
 import { EnviromentService } from './modules/enviroment/enviroment.service';
+import { CronModule } from './modules/cron/cron.module';
 
 @Module({
   imports: [
@@ -51,6 +52,7 @@ import { EnviromentService } from './modules/enviroment/enviroment.service';
       }),
     }),
     ScheduleModule.forRoot(),
+    CronModule,
     RunnerModule,
   ],
   controllers: [],

@@ -12,5 +12,6 @@ import { RunnerController } from './controllers/runner.controller';
   ],
   controllers: [RunnerController],
   providers: [RunnerService],
+  exports: [RunnerService]
 })
 export class RunnerModule {}

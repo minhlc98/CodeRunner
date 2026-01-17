@@ -2,7 +2,6 @@ import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Cron } from '@nestjs/schedule';
 
 import config from 'config/app';
 import { Runner } from "src/modules/runner/entities/runner.entity";
@@ -42,13 +41,5 @@ export class RunnerService {
     this.executeCode = executeCode();
     this.run = run(this.di);
     this.clean = clean(this.di);
-  }
-
-  @Cron(config.cron.cleanRunners.expression, {
-    name: 'cleanOldRunners',
-    disabled: config.cron.cleanRunners.disabled
-  })
-  async cleanOldRunners() {
-    return this.clean();
   }
 }
