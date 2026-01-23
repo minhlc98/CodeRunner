@@ -5,12 +5,13 @@ import { InjectRepository } from '@nestjs/typeorm';
 
 import config from 'config/app';
 import { Runner } from "src/modules/runner/entities/runner.entity";
-import _CONST from 'src/shared/_CONST';
-import { assertExists } from './activities/runner.assert-exists';
-import { createRunner } from './activities/runner.create';
-import { executeCode } from './activities/runner.execute-code';
-import { run } from './activities/runner.run';
-import { clean } from './activities/runner.clean';
+import { assertExists } from 'src/modules/runner/services/activities/runner.assert-exists';
+import { createRunner } from 'src/modules/runner/services/activities/runner.create';
+import { executeCode } from 'src/modules/runner/services/activities/runner.execute-code';
+import { run } from 'src/modules/runner/services/activities/runner.run';
+import { clean } from 'src/modules/runner/services/activities/runner.clean';
+import { ProgrammingLanguageService } from 'src/modules/programming-language/programming-language.service';
+import { RedisService } from 'src/modules/redis/redis.service';
 
 @Injectable()
 export class RunnerService {
@@ -18,6 +19,8 @@ export class RunnerService {
     runnerRepository: Repository<Runner>;
     taskClient: ClientProxy;
     runnerService: RunnerService;
+    programmingLanguageService: ProgrammingLanguageService;
+    redisService: RedisService;
   };
 
   public assertExists: ReturnType<typeof assertExists>;
@@ -28,12 +31,16 @@ export class RunnerService {
 
   constructor(
     @Inject(config.rabbitmq.queue.task.name.toUpperCase()) private taskClient: ClientProxy,
-    @InjectRepository(Runner) private runnerRepository: Repository<Runner>
+    @InjectRepository(Runner) private runnerRepository: Repository<Runner>,
+    private programmingLanguageService: ProgrammingLanguageService,
+    private redisService: RedisService,
   ) { 
     this.di = {
       runnerRepository: this.runnerRepository,
       taskClient: this.taskClient,
       runnerService: this,
+      programmingLanguageService: this.programmingLanguageService,
+      redisService: this.redisService,
     };
 
     this.assertExists = assertExists(this.di);

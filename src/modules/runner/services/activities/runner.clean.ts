@@ -8,7 +8,7 @@ export const clean = ({ runnerRepository }: { runnerRepository: Repository<Runne
 
     if (!date) {
       date = new Date();
-      date.setDate(date.getDate() - 1); // default to a day ago
+      date.setDate(date.getDate() - 7); // default to a week ago
     }
     const result = await runnerRepository.createQueryBuilder()
       .delete()
