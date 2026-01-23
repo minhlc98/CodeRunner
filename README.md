@@ -1,5 +1,4 @@
-<p><strong>Technologies: </strong>NestJS, PostgreSQL, Docker, Rabbit, Redis</p>
-<p><strong>Link Demo: </strong> https://coderunner.online</p>
+<p><strong>Technologies: </strong>NestJS, PostgreSQL, Docker, RabbitMQ, Redis</p>
 <p><strong>Client Code: </strong>https://github.com/minhlc98/CodeRunner-UI</p>
 
 <p align="center">
@@ -29,6 +28,18 @@
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
+## Init Database
+Run script in ```src/database/init.sql```
+
+## Init sandbox
+```bash
+$ docker pull node:20
+$ docker build -f Docker/Dockerfile -t typescript-runner .
+$ docker pull golang:1.24-alpine
+$ docker pull openjdk:26-slim
+$ docker pull python:3.11-slim
+
+```
 ## Project setup
 
 ```bash
