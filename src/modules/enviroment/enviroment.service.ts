@@ -66,26 +66,6 @@ class Enviroment {
   @Expose()
   @IsString()
   REDIS_PASSWORD: string = "default";
-
-  @Expose()
-  @IsString()
-  JAVASCRIPT: string;
-
-  @Expose()
-  @IsString()
-  TYPESCRIPT: string;
-
-  @Expose()
-  @IsString()
-  GO: string;
-
-  @Expose()
-  @IsString()
-  JAVA: string;
-
-  @Expose()
-  @IsString()
-  PYTHON: string;
 }
 
 @Injectable()
