@@ -2,12 +2,12 @@ import { NestFactory } from '@nestjs/core';
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
 import { NestExpressApplication } from '@nestjs/platform-express';
-import { EnviromentService } from './modules/enviroment/enviroment.service';
+import { EnvironmentService } from './modules/environment/environment.service';
 
 async function bootstrap() {
   const logger = new Logger("Application");
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
-  const env: EnviromentService = app.get(EnviromentService);
+  const env: EnvironmentService = app.get(EnvironmentService);
   app.enableCors({
     origin: env.ENVIROMENT.CORS_ORIGIN,
   });

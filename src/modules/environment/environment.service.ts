@@ -6,7 +6,7 @@ function stringToBoolean(value: string): boolean {
   return value === 'true' || value === '1';
 }
 
-class Enviroment {
+class Environment {
   @Expose()
   @IsString()
   TZ: string = "UTC";
@@ -69,13 +69,13 @@ class Enviroment {
 }
 
 @Injectable()
-export class EnviromentService {
-  public ENVIROMENT: Enviroment;
+export class EnvironmentService {
+  public ENVIROMENT: Environment;
 
   constructor() {
     this.ENVIROMENT = plainToInstance(
-      Enviroment,
-      { ...new Enviroment(), ...process.env },
+      Environment,
+      { ...new Environment(), ...process.env },
       { excludeExtraneousValues: true },
     );
   }

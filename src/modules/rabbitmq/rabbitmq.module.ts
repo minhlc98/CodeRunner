@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import config from 'config/app';
-import { EnviromentModule } from 'src/modules/enviroment/enviroment.module';
-import { EnviromentService } from 'src/modules/enviroment/enviroment.service';
+import { EnviromentModule } from 'src/modules/environment/environment.module';
+import { EnvironmentService } from 'src/modules/environment/environment.service';
 
 const queue_config = config.rabbitmq.queue.task;
 
@@ -12,8 +12,8 @@ const queue_config = config.rabbitmq.queue.task;
       {
         imports: [EnviromentModule],
         name: queue_config.name.toUpperCase(),
-        inject: [EnviromentService],
-        useFactory: async (env: EnviromentService) => {
+        inject: [EnvironmentService],
+        useFactory: async (env: EnvironmentService) => {
           return {
             transport: Transport.RMQ,
             options: {

@@ -9,8 +9,8 @@ import Redis from 'ioredis';
 import { RunnerModule } from './modules/runner/runner.module';
 import { Runner } from './modules/runner/entities/runner.entity';
 import { RedisModule } from './modules/redis/redis.module';
-import { EnviromentModule } from './modules/enviroment/enviroment.module';
-import { EnviromentService } from './modules/enviroment/enviroment.service';
+import { EnviromentModule } from './modules/environment/environment.module';
+import { EnvironmentService } from './modules/environment/environment.service';
 import { CronModule } from './modules/cron/cron.module';
 import { ProgrammingLanguageModule } from './modules/programming-language/programming-language.module';
 import { ProgrammingLanguage } from './modules/programming-language/programming-language.entity';
@@ -20,12 +20,12 @@ import { REDIS_CLIENT_TOKEN } from './shared/constant';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: '.env',
+      envFilePath: '.env.local',
     }),
     EnviromentModule,
     TypeOrmModule.forRootAsync({
-      inject: [EnviromentService],
-      useFactory: async (env: EnviromentService) => ({
+      inject: [EnvironmentService],
+      useFactory: async (env: EnvironmentService) => ({
           type: 'postgres',
           host: env.ENVIROMENT.POSTGRES_HOST,
           port: env.ENVIROMENT.POSTGRES_PORT,
