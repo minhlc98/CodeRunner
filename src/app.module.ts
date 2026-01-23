@@ -9,10 +9,12 @@ import Redis from 'ioredis';
 import { RunnerModule } from './modules/runner/runner.module';
 import { Runner } from './modules/runner/entities/runner.entity';
 import { RedisModule } from './modules/redis/redis.module';
-import { REDIS_CLIENT } from './modules/redis/redis.module';
 import { EnviromentModule } from './modules/enviroment/enviroment.module';
 import { EnviromentService } from './modules/enviroment/enviroment.service';
 import { CronModule } from './modules/cron/cron.module';
+import { ProgrammingLanguageModule } from './modules/programming-language/programming-language.module';
+import { ProgrammingLanguage } from './modules/programming-language/programming-language.entity';
+import { REDIS_CLIENT_TOKEN } from './shared/constant';
 
 @Module({
   imports: [
@@ -29,7 +31,7 @@ import { CronModule } from './modules/cron/cron.module';
           port: env.ENVIROMENT.POSTGRES_PORT,
           password: env.ENVIROMENT.POSTGRES_PASSWORD,
           username: env.ENVIROMENT.POSTGRES_USER,
-          entities: [Runner],
+          entities: [ProgrammingLanguage, Runner],
           database: env.ENVIROMENT.POSTGRES_DB || 'coderunner',
           ssl: env.ENVIROMENT.POSTGRES_SSL,
           extra: env.ENVIROMENT.POSTGRES_SSL
@@ -43,9 +45,10 @@ import { CronModule } from './modules/cron/cron.module';
           logging: false,
       })
     }),
+    RedisModule,
     ThrottlerModule.forRootAsync({
       imports: [RedisModule],
-      inject: [REDIS_CLIENT],
+      inject: [REDIS_CLIENT_TOKEN],
       useFactory: (redisClient: Redis) => ({
         throttlers: [{ limit: 10, ttl: 60 }],
         storage: new ThrottlerStorageRedisService(redisClient),
@@ -53,6 +56,7 @@ import { CronModule } from './modules/cron/cron.module';
     }),
     ScheduleModule.forRoot(),
     CronModule,
+    ProgrammingLanguageModule,
     RunnerModule,
   ],
   controllers: [],

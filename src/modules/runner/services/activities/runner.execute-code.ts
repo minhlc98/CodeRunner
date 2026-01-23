@@ -1,13 +1,15 @@
+import type { ExecuteResult } from "src/modules/runner/interfaces/execute-code-result.interface";
+import type { Runner } from "src/modules/runner/entities/runner.entity";
+import type { ProgrammingLanguage } from "src/modules/programming-language/programming-language.entity";
+
 import { exec } from "child_process";
 import { writeCodeToFile } from "src/modules/runner/utils";
-import { ExecuteResult } from "../../interfaces/execute-code-result.interface";
 import { log_error, removeDir } from "src/common/utils/helper";
-import _CONST from "src/shared/_CONST";
 
 export const executeCode = () => {
-  return async ({ language, code }: { language: string, code: string }): Promise<ExecuteResult> => {
-    const { folder, fileName } = await writeCodeToFile(language, code);
-    const command = process.env[language]?.replace('{fileName}', fileName).replace('{folder}', folder);
+  return async (programingLanguage: ProgrammingLanguage, runner: Runner): Promise<ExecuteResult> => {
+    const { folder, fileName } = await writeCodeToFile({ fileExtension: programingLanguage.fileExtension, code: runner.code });
+    const command = programingLanguage.runCommand.replace('{fileName}', fileName).replace('{folder}', folder);
 
     async function executeCommand(command: string): Promise<ExecuteResult> {
       return new Promise((resolve) => {
@@ -24,7 +26,7 @@ export const executeCode = () => {
               stderr: null
             });
           }
-        }, _CONST.RUNNER.LANGUAGE_INFO[language]?.timeout || 3000); // default timeout 3s
+        }, programingLanguage.timeout || 3000); // default timeout 3s
       });
     }
 

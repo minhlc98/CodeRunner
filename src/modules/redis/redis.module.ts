@@ -1,11 +1,11 @@
 import { Global, Logger, Module } from '@nestjs/common';
 import { EnviromentService } from 'src/modules/enviroment/enviroment.service';
 import Redis from 'ioredis';
+import { REDIS_CLIENT_TOKEN } from 'src/shared/constant';
+import { RedisService } from './redis.service';
 
-export const REDIS_CLIENT = Symbol('REDIS_CLIENT');
-
-const redisProvider = {
-  provide: REDIS_CLIENT,
+const RedisProvider = {
+  provide: REDIS_CLIENT_TOKEN,
   inject: [EnviromentService],
   useFactory: async (env: EnviromentService) => {
     const client = new Redis({
@@ -28,7 +28,7 @@ const redisProvider = {
 
 @Global()
 @Module({
-  providers: [redisProvider],
-  exports: [redisProvider],
+  providers: [RedisProvider, RedisService],
+  exports: [RedisProvider, RedisService],
 })
 export class RedisModule {}

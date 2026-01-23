@@ -1,33 +1,33 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import _CONST from 'src/shared/_CONST';
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { RUNNER } from 'src/shared/constant';
 
 @Entity()
 export class Runner {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ type: 'varchar', length: 30 })
-  language: string;
+  @Column({ name: 'programming_language_id', type: 'varchar', length: 30 })
+  programmingLanguageId: string;
 
   @Column({ type: 'varchar', length: 10000 })
   code: string;
 
-  @Column({ type: 'varchar', length: 20, enum: _CONST.RUNNER.LIST_STATUS, default: _CONST.RUNNER.STATUS.IDLE })
+  @Column({ type: 'varchar', length: 20, enum: RUNNER.LIST_STATUS, default: RUNNER.STATUS.IDLE })
   status: string;
 
-  @Column({ type: 'varchar', default: null, nullable: true })
-  error: string;
+  @Column({ type: 'varchar', nullable: true })
+  error: string | null;
 
-  @Column({ type: 'varchar', default: null, nullable: true })
-  output: string;
+  @Column({ type: 'varchar', nullable: true })
+  output: string | null;
 
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  @CreateDateColumn({ name: 'created_at', type: 'timestamptz' })
   createdAt: Date;
 
-  @Column({ type: 'timestamp', default: null, nullable: true })
+  @UpdateDateColumn({ name: 'updated_at', type: 'timestamptz' })
   updatedAt: Date;
 
-  @Column({ type: 'timestamp', default: null, nullable: true })
+  @Column({ name: 'finished_at', type: 'timestamptz', default: null, nullable: true })
   finishedAt: Date;
 
   @Column({ type: 'int', default: 0 })

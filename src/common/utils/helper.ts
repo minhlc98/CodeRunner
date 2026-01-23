@@ -1,4 +1,5 @@
 import * as moment from 'moment';
+import * as crypto from 'crypto';
 import { createWriteStream, mkdir, rm } from 'fs';
 
 export const writeFileStream = (filePath: string, content: string): Promise<void> => {
@@ -62,3 +63,5 @@ export const log_error = (error: unknown): void => {
   }
   console.error(`[${now}] [ERROR]: ${error}`);
 }
+
+export const generateMd5Hash = (str: string): string => crypto.createHash('md5').update(str).digest('hex');

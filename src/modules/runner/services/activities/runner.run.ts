@@ -1,14 +1,27 @@
+import type { ExecuteResult } from "src/modules/runner/interfaces/execute-code-result.interface";
+import type { RunCodeResponse } from "src/modules/runner/interfaces/run-code-response.interface"
+import type { RunnerService } from "src/modules/runner/services/runner.service";
+
 import { trim } from "lodash";
 import { Repository } from "typeorm";
 
-import { RunCodeResponse } from "src/modules/runner/interfaces/run-code-response.interface"
-import _CONST from "src/shared/_CONST";
+import { MS, RUNNER } from "src/shared/constant";
 import { Runner } from "src/modules/runner/entities/runner.entity";
-import { ExecuteResult } from "src/modules/runner/interfaces/execute-code-result.interface";
 import { log_error } from "src/common/utils/helper";
-import { RunnerService } from "../runner.service";
 
-export const run = ({ runnerRepository, runnerService }: { runnerRepository: Repository<Runner>, runnerService: RunnerService }) => {
+import { ProgrammingLanguageService } from "src/modules/programming-language/programming-language.service";
+
+type RunDIType = {
+  runnerRepository: Repository<Runner>,
+  runnerService: RunnerService,
+  programmingLanguageService: ProgrammingLanguageService
+}
+
+export const run = ({
+  runnerRepository,
+  runnerService,
+  programmingLanguageService
+}: RunDIType) => {
   return async ({ runner }: { runner: Runner }): Promise<RunCodeResponse> => {
     const response: RunCodeResponse = {
       success: false,
@@ -16,7 +29,7 @@ export const run = ({ runnerRepository, runnerService }: { runnerRepository: Rep
       error: null,
     }
 
-    if (runner.status !== _CONST.RUNNER.STATUS.IDLE) {
+    if (runner.status !== RUNNER.STATUS.IDLE) {
       return response;
     }
 
@@ -24,10 +37,10 @@ export const run = ({ runnerRepository, runnerService }: { runnerRepository: Rep
       const startedAt = new Date();
       const runnerCreatedAt = runner.createdAt;
       const durationFromCreatedToStart = startedAt.getTime() - runnerCreatedAt.getTime();
-      if (durationFromCreatedToStart > _CONST.MS.MINUTE) {
+      if (durationFromCreatedToStart > MS.MINUTE) {
         // skip running if the runner has been waiting for too long
         await runnerRepository.update(runner.id, {
-          status: _CONST.RUNNER.STATUS.SKIPPED,
+          status: RUNNER.STATUS.SKIPPED,
           updatedAt: startedAt,
           finishedAt: startedAt,
           duration: 0,
@@ -36,12 +49,14 @@ export const run = ({ runnerRepository, runnerService }: { runnerRepository: Rep
         return response;
       }
 
+      const programingLanguage = await programmingLanguageService.assertExists(runner.programmingLanguageId, true, true);
+
       await runnerRepository.update(runner.id, {
-        status: _CONST.RUNNER.STATUS.PROCESSING,
+        status: RUNNER.STATUS.PROCESSING,
         updatedAt: startedAt
       });
 
-      const executeResult: ExecuteResult = await runnerService.executeCode({ language: runner.language, code: runner.code });
+      const executeResult: ExecuteResult = await runnerService.executeCode(programingLanguage, runner);
 
       if (executeResult.error) {
         response.error = executeResult.error.message;
@@ -59,9 +74,9 @@ export const run = ({ runnerRepository, runnerService }: { runnerRepository: Rep
       const finishedAt = new Date();
 
       await runnerRepository.update(runner.id, {
-        output: response.output ?? undefined,
-        error: response.error ?? undefined,
-        status: response.success ? _CONST.RUNNER.STATUS.COMPLETED : _CONST.RUNNER.STATUS.ERROR,
+        output: response.output,
+        error: response.error,
+        status: response.success ? RUNNER.STATUS.COMPLETED : RUNNER.STATUS.ERROR,
         finishedAt: finishedAt,
         duration: finishedAt.getTime() - startedAt.getTime(),
       });
