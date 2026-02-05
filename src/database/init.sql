@@ -32,8 +32,8 @@ INSERT INTO programming_languages(name, file_extension, docker_image, run_comman
 VALUES 
 ('JavaScript', 'js', 'node:20', 'docker run --rm --network none --cpus="0.5" --memory="128m" -v {folder}:/app -w /app node:20 node {fileName}', TRUE, 3000, 'console.log("Hello, World!");'),
 ('TypeScript', 'ts', 'typescript-runner', 'docker run --rm --network none --cpus="0.5" --memory="128m" -v {folder}:/app -w /app typescript-runner tsx {fileName}', TRUE, 4000, 'const name: string = "Minh";\nconsole.log("Hello " + name + "!");'),
-('Go', 'go', 'golang:1.24-alpine', 'docker run --rm --network none --cpus="1.0" --memory="300m" -v {folder}:/app -w /app golang:1.24-alpine go run {fileName}', TRUE, 15000, 'package main\n\nimport "fmt"\n\nfunc main() {\n\tfmt.Println("Hello, World!")\n}'),
-('Java', 'java', 'openjdk:26-slim', 'docker run --rm --network none --cpus="1.0" --memory="256m" -v {folder}:/app -w /app openjdk:26-slim bash -c "javac {fileName} && java solution"', TRUE, 8000, 'public class solution {\n\tpublic static void main(String[] args) {\n\t\tSystem.out.println("Hello, World!");\n\t}\n}'),
+('Go', 'go', 'golang:1.24-alpine', 'docker run --rm --network none --cpus="1.0" --memory="512m" -v {folder}:/app -w /app golang:1.24-alpine go run {fileName}', TRUE, 16000, 'package main\n\nimport "fmt"\n\nfunc main() {\n\tfmt.Println("Hello, World!")\n}'),
+('Java', 'java', 'openjdk:26-ea-slim', 'docker run --rm --network none --cpus="1.0" --memory="256m" -v {folder}:/app -w /app openjdk:26-ea-slim bash -c "javac {fileName} && java solution"', TRUE, 8000, 'public class solution {\n\tpublic static void main(String[] args) {\n\t\tSystem.out.println("Hello, World!");\n\t}\n}'),
 ('Python', 'py', 'python:3.11-slim', 'docker run --rm --network none --cpus="0.5" --memory="128m" -v {folder}:/app -w /app python:3.11-slim python {fileName}', TRUE, 5000, 'print("Hello, World!")');
 
 SELECT * FROM programming_languages

@@ -38,7 +38,7 @@ Run script in ```src/database/init.sql```
 $ docker pull node:20
 $ docker build -f Docker/Dockerfile -t typescript-runner .
 $ docker pull golang:1.24-alpine
-$ docker pull openjdk:26-slim
+$ docker pull openjdk:26-ea-slim
 $ docker pull python:3.11-slim
 
 ```
